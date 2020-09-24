@@ -1,53 +1,27 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-
+import PetForm from './components/PetForm';
+import PetList from './components/PetList';
 import "./App.css"
 
-function randomNum() {
-  return Math.floor(Math.random() * 255)
-}
-
-
 class App extends Component {
+  // this.state.pets [{name: "Fido", species: "Dog"}]
   state = {
-    title: "This title is coming from the state!!!",
-    color: 'black'
+    pets: []
   }
 
-  discoStyle = () => {
-    // this.state.color = 'blue'
-    let r = randomNum();
-    let g = randomNum();
-    let b = randomNum();
+  addPet = pet => {
     this.setState({
-      color: `rgb(${r}, ${g}, ${b})`
-    })
-  }
-
-  changeToBlue = () => {
-    this.setState({
-      color: 'blue'
-    })
-  }
-
-  handleChange = e => {
-    this.setState({
-      title: e.target.value
+      pets: [...this.state.pets, pet]
     })
   }
 
   render() {
     return (
       <div className="App">
-        {/* <h1 onClick={ this.changeToBlue } style={{ color: this.state.color}}>Hello World</h1> */}
-        <Header 
-          handleClick={this.discoStyle}
-          color={this.state.color}
-          title={this.state.title}
-        />
-        <input type="text" value={this.state.title} onChange={ this.handleChange } />
-        <br />
-        <button onClick={this.changeToBlue}>Click Me To Change To Blue</button>
+        <Header />
+        <PetForm addPet={this.addPet} />
+        <PetList pets={this.state.pets} />
       </div>
     );
   }
