@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PetCard from './PetCard';
+import PetCard from '../components/PetCard';
 
 class PetList extends Component {
     render() {
