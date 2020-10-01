@@ -12,6 +12,12 @@ class App extends Component {
     pets: []
   }
 
+  componentDidMount() {
+    fetch('http://localhost:3001/pets')
+      .then( resp => resp.json() )
+      .then( pets => this.setState({ pets }))
+  }
+
   addPet = pet => {
     this.setState({
       pets: [...this.state.pets, pet]

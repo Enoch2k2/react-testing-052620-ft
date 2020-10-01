@@ -9,13 +9,24 @@ class PetForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        
-        this.props.addPet(this.state)
 
-        this.setState({
-            name: "",
-            species: ""
+        const strongParams = {
+            pet: this.state
+        }
+        
+        fetch('http://localhost:3001/pets', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(strongParams)
         })
+            .then( resp => resp.json() )
+            .then( pet => {
+                this.props.addPet(pet)
+                this.props.history.push('/pets') // redirects to /pets
+            })
     }
 
     handleChange = e => {
