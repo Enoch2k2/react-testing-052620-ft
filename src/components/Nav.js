@@ -1,10 +1,12 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 
-const Nav = ({ onView }) => (
+const Nav = (props) => (
             <nav>
                 <ul>
-                    <li onClick={ () => onView('form') }>Create Pet</li>
-                    <li onClick={ () => onView('list') }>List Pets</li>
+                    <li><NavLink to="/">Home</NavLink></li>
+                    <li><NavLink to="/pets/new">Create Pet</NavLink></li>
+                    <li><NavLink to="/pets">List Pets</NavLink></li>
                 </ul>
             </nav>
         )
