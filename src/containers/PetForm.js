@@ -1,17 +1,15 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
-class PetForm extends Component {
+const PetForm = ({ addPet, history }) => {
 
-    state = {
-        name: "",
-        species: ""
-    }
+    const [name, setName] = useState("")
+    const [species, setSpecies] = useState("")
 
-    handleSubmit(e) {
+    const handleSubmit = e => {
         e.preventDefault();
 
         const strongParams = {
-            pet: this.state
+            pet: { name, species }
         }
         
         fetch('http://localhost:3001/pets', {
@@ -24,37 +22,29 @@ class PetForm extends Component {
         })
             .then( resp => resp.json() )
             .then( pet => {
-                this.props.addPet(pet)
-                this.props.history.push('/pets') // redirects to /pets
+                addPet(pet)
+                history.push('/pets') // redirects to /pets
             })
     }
 
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
+    return (
+        <div>
+            <h3>Create Pet</h3>
 
-    render() {
-        return (
-            <div>
-                <h3>Create Pet</h3>
+            <form onSubmit={ handleSubmit }>
+                <div>
+                    <label htmlFor="name">Name: </label>
+                    <input type="text" name="name" id="name" value={ name } onChange={ e => setName(e.target.value) } />
+                </div>
+                <div>
+                    <label htmlFor="species">Species: </label>
+                    <input type="text" name="species" id="species" value={ species } onChange={ e => setSpecies(e.target.value) } />
+                </div>
 
-                <form onSubmit={this.handleSubmit.bind(this)}>
-                    <div>
-                        <label htmlFor="name">Name: </label>
-                        <input type="text" name="name" id="name" value={this.state.name} onChange={this.handleChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="species">Species: </label>
-                        <input type="text" name="species" id="species" value={this.state.species} onChange={this.handleChange} />
-                    </div>
-
-                    <input type="submit" value="Create Pet" />
-                </form>
-            </div>
-        )
-    }
+                <input type="submit" value="Create Pet" />
+            </form>
+        </div>
+    )
 }
 
 export default PetForm
