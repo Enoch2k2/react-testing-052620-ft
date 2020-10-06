@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import PetCard from '../components/PetCard';
+import { connect } from 'react-redux';
 
-class PetList extends Component {
-  componentDidMount() {
-    console.log(this.props);
-  }
-  
+class PetList extends Component {  
     render() {
         const pets = this.props.pets.map((pet, i) => <PetCard key={i} pet={pet} />)
         return (
@@ -19,4 +16,10 @@ class PetList extends Component {
     }
 }
 
-export default PetList
+const mapStateToProps = petsReducer => {
+  return {
+    pets: petsReducer
+  }
+}
+
+export default connect(mapStateToProps)(PetList);

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { createPet } from '../actions/petActions';
 
 class PetForm extends Component {
 
@@ -10,23 +12,12 @@ class PetForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const strongParams = {
+        const pet = {
             pet: this.state
         }
         
-        fetch('http://localhost:3001/pets', {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(strongParams)
-        })
-            .then( resp => resp.json() )
-            .then( pet => {
-                this.props.addPet(pet)
-                this.props.history.push('/pets') // redirects to /pets
-            })
+        this.props.createPet(pet, this.props.history)
+        
     }
 
     handleChange = e => {
@@ -57,4 +48,4 @@ class PetForm extends Component {
     }
 }
 
-export default PetForm
+export default connect(null, { createPet })(PetForm);

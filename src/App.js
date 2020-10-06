@@ -4,6 +4,9 @@ import PetForm from './containers/PetForm';
 import PetList from './containers/PetList';
 import PetShow from './containers/PetShow';
 import Home from './containers/Home';
+import { connect } from 'react-redux';
+
+import { fetchPets } from './actions/petActions';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -14,15 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001/pets')
-      .then( resp => resp.json() )
-      .then( pets => this.setState({ pets }))
-  }
-
-  addPet = pet => {
-    this.setState({
-      pets: [...this.state.pets, pet]
-    })
+    this.props.fetchPets(); 
   }
 
   render() {
@@ -32,8 +27,8 @@ class App extends Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={ Home } />
-            <Route exact path="/pets/new" render={ props => <PetForm { ...props } addPet={ this.addPet } /> } />
-            <Route exact path="/pets" render={ props => <PetList { ...props } pets={ this.state.pets } />} />
+            <Route exact path="/pets/new" component={ PetForm } />
+            <Route exact path="/pets" component={ PetList } />
             <Route exact path="/pets/:id" render={ props => <PetShow { ...props } pets={ this.state.pets } />} />
             <Route render={ () => <p>This page doesn't exist</p>} />
           </Switch>
@@ -43,4 +38,10 @@ class App extends Component {
   }
 }
 
-export default App;
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchPets: pets => dispatch(addPets(pets))
+//   }
+// }
+
+export default connect(null, { fetchPets })(App);
